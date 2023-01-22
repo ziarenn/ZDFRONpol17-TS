@@ -192,7 +192,6 @@ const people: (Person | Programmer | number[])[] = [
   [1, 2, 3, 45, 56, 7],
 ];
 
-
 // 1. Stwórz funkcję renderTodoList (async/await)
 // 2. W funkcji renderTodoList strzel do https://jsonplaceholder.typicode.com/todos/ fetchem, pamiętaj o await.
 // 3. Rozpakuj odpowiedź metodą JSON. Również pamiętaj o await.
@@ -200,3 +199,26 @@ const people: (Person | Programmer | number[])[] = [
 // 5. Z każdego todosa pochodzącego z API wyciągnij własność title. Możesz skorzystać z metody .map(). Wszystkie tytuły składuj w liście w zmiennej titles.
 // 6. Dla każdego tytułu stwórz element li (createElement()), wykorzystując forEach. Ustaw textContent li na aktualny tytuł (1 paramter forEach). Zaraz po tym przyczep (appendChild) li do ul'a (pkt 4).
 // 7. Przyczep (appendChild) ul'a do body strony.
+
+interface TodoObj {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+const renderTodoList = async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/todos/ ");
+  const data = await response.json();
+  console.log(data);
+  // type TodoObj = typeof data[0];
+  const ul = document.createElement("ul");
+  const titles = data.map((todo: TodoObj) => todo.title);
+  titles.forEach((title: string) => {
+    const li = document.createElement("li");
+    li.textContent = title;
+    ul.appendChild(li);
+  });
+  document.body.appendChild(ul);
+};
+renderTodoList();
